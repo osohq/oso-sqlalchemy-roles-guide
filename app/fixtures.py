@@ -23,8 +23,12 @@ def load_fixture_data(session):
         session.add(user)
 
     # CREATE RESOURCE DATA
-    beatles = Organization(name="The Beatles")
-    monsters = Organization(name="Monsters Inc.")
+    beatles = Organization(
+        name="The Beatles", billing_address="64 Penny Ln Liverpool, UK"
+    )
+    monsters = Organization(
+        name="Monsters Inc.", billing_address="123 Scarers Rd Monstropolis, USA"
+    )
     organizations = [beatles, monsters]
     for org in organizations:
         session.add(org)
