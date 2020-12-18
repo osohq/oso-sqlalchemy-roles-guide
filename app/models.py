@@ -1,12 +1,5 @@
-import json
-import datetime
-from enum import Enum
-
-from flask import current_app
-from flask_sqlalchemy import SQLAlchemy
-
 from sqlalchemy.types import Integer, String
-from sqlalchemy.schema import Table, Column, ForeignKey
+from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 

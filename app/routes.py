@@ -1,7 +1,5 @@
-from flask import Blueprint, g, request, current_app
-from flask_oso import authorize
+from flask import Blueprint, g, request
 from .models import User, Organization, Repository
-from .db import Session
 
 bp = Blueprint("routes", __name__)
 
