@@ -2,7 +2,7 @@ from .conftest import test_client, test_db_session
 from flask import json
 import pytest
 
-from app.models import User, Repository, RepositoryRole
+from app.models import User, Repository
 
 
 def test_db_loads(test_db_session):
@@ -46,111 +46,6 @@ def test_repos_index(test_client):
     assert repos[0]["name"] == "Abbey Road"
 
     resp = test_client.get("/orgs/2/repos", headers={"user": "john@beatles.com"})
-    assert resp.status_code == 403
-
-
-def test_repos_new(test_client):
-    resp = test_client.post(
-        "/orgs/1/repos",
-        headers={"user": "john@beatles.com"},
-        json={"name": "White Album"},
-    )
-    assert resp.status_code == 200
-
-    resp = test_client.post(
-        "/orgs/2/repos",
-        headers={"user": "john@beatles.com"},
-        json={"name": "White Album"},
-    )
-    assert resp.status_code == 403
-
-
-def test_repos_show(test_client):
-    # test user with direct access to repo can read it
-    resp = test_client.get("/orgs/1/repos/1", headers={"user": "john@beatles.com"})
-    assert resp.status_code == 200
-
-    # test user with org base role access to repo can read it
-    resp = test_client.get("/orgs/1/repos/1", headers={"user": "ringo@beatles.com"})
-    assert resp.status_code == 200
-
-    # test user outside org cannot read repos
-    resp = test_client.get("/orgs/2/repos/2", headers={"user": "john@beatles.com"})
-    assert resp.status_code == 403
-
-
-def test_issues_index(test_client):
-    resp = test_client.get(
-        "/orgs/1/repos/1/issues", headers={"user": "john@beatles.com"}
-    )
-    assert resp.status_code == 200
-
-    resp = test_client.get(
-        "/orgs/2/repos/2/issues", headers={"user": "john@beatles.com"}
-    )
-    assert resp.status_code == 403
-
-    # TODO: add issues to fixtures to test list filtering
-
-
-def test_repo_roles(test_client):
-    # Test getting roles
-    resp = test_client.get(
-        "/orgs/1/repos/1/roles", headers={"user": "john@beatles.com"}
-    )
-    roles = json.loads(resp.data).get("roles")
-    assert resp.status_code == 200
-    assert len(roles) == 2
-    assert roles[0].get("user").get("email") == "john@beatles.com"
-    assert roles[1].get("user").get("email") == "paul@beatles.com"
-
-    resp = test_client.get(
-        "/orgs/1/repos/1/roles", headers={"user": "paul@beatles.com"}
-    )
-    assert resp.status_code == 403
-
-    # Test editing roles
-    resp = test_client.post(
-        "/orgs/1/repos/1/roles",
-        headers={"user": "john@beatles.com"},
-        json={
-            "role": {"name": "WRITE", "user": "ringo@beatles.com"},
-        },
-    )
-    assert resp.status_code == 200
-
-    resp = test_client.get(
-        "/orgs/1/repos/1/roles", headers={"user": "john@beatles.com"}
-    )
-    assert resp.status_code == 200
-    roles = json.loads(resp.data).get("roles")
-    assert len(roles) == 3
-    assert roles[2].get("user").get("email") == "ringo@beatles.com"
-    assert roles[2].get("role").get("name") == "WRITE"
-
-
-def test_teams(test_client):
-    resp = test_client.get("/orgs/1/teams", headers={"user": "john@beatles.com"})
-    assert resp.status_code == 200
-
-    resp = test_client.get("/orgs/1/teams", headers={"user": "paul@beatles.com"})
-    assert resp.status_code == 200
-
-    resp = test_client.get("/orgs/2/teams", headers={"user": "john@beatles.com"})
-    assert resp.status_code == 403
-
-
-def test_team(test_client):
-    resp = test_client.get("/orgs/1/teams/1", headers={"user": "john@beatles.com"})
-    assert resp.status_code == 200
-
-    resp = test_client.get("/orgs/1/teams/1", headers={"user": "paul@beatles.com"})
-    assert resp.status_code == 200
-
-    resp = test_client.get("/orgs/1/teams/1", headers={"user": "ringo@beatles.com"})
-    assert resp.status_code == 403
-
-    resp = test_client.get("/orgs/1/teams/3", headers={"user": "paul@beatles.com"})
     assert resp.status_code == 403
 
 

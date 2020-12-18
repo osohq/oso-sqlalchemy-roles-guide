@@ -1,5 +1,4 @@
-from .models import User, Organization, Team, Repository, Issue
-from .models import RepositoryRole, OrganizationRole, TeamRole
+from .models import User, Organization, Repository, OrganizationRole
 
 
 def load_fixture_data(session):
@@ -24,21 +23,11 @@ def load_fixture_data(session):
         session.add(user)
 
     # CREATE RESOURCE DATA
-    beatles = Organization(name="The Beatles", base_repo_role="READ")
-    monsters = Organization(name="Monsters Inc.", base_repo_role="READ")
+    beatles = Organization(name="The Beatles")
+    monsters = Organization(name="Monsters Inc.")
     organizations = [beatles, monsters]
     for org in organizations:
         session.add(org)
-    vocalists = Team(name="Vocalists", organization=beatles)
-    percussion = Team(name="Percussion", organization=beatles)
-    scarers = Team(name="Scarers", organization=monsters)
-    teams = [
-        vocalists,
-        percussion,
-        scarers,
-    ]
-    for team in teams:
-        session.add(team)
     abby_road = Repository(name="Abbey Road", organization=beatles)
     paperwork = Repository(name="Paperwork", organization=monsters)
     repositories = [
@@ -47,14 +36,9 @@ def load_fixture_data(session):
     ]
     for repo in repositories:
         session.add(repo)
-    # TODO: issues
 
     # CREATE ROLE DATA
     roles = [
-        RepositoryRole(name="READ", repository=abby_road, user=john),
-        RepositoryRole(name="READ", repository=abby_road, user=paul),
-        RepositoryRole(name="READ", repository=paperwork, user=mike),
-        RepositoryRole(name="READ", repository=paperwork, user=sully),
         OrganizationRole(
             name="OWNER",
             organization=beatles,
@@ -85,11 +69,6 @@ def load_fixture_data(session):
             organization=monsters,
             user=randall,
         ),
-        TeamRole(name="MEMBER", team=vocalists, user=paul),
-        TeamRole(name="MAINTAINER", team=vocalists, user=john),
-        TeamRole(name="MAINTAINER", team=percussion, user=ringo),
-        TeamRole(name="MEMBER", team=scarers, user=randall),
-        TeamRole(name="MAINTAINER", team=scarers, user=sully),
     ]
 
     for role in roles:
