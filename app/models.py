@@ -9,6 +9,16 @@ Base = declarative_base()
 ## MODELS ##
 
 
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String())
+
+    def repr(self):
+        return {"id": self.id, "email": self.email}
+
+
 class Organization(Base):
     __tablename__ = "organizations"
 
@@ -18,16 +28,6 @@ class Organization(Base):
 
     def repr(self):
         return {"id": self.id, "name": self.name}
-
-
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    email = Column(String())
-
-    def repr(self):
-        return {"id": self.id, "email": self.email}
 
 
 class Repository(Base):

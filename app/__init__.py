@@ -16,14 +16,6 @@ from sqlalchemy_oso.roles import enable_roles
 engine = create_engine("sqlite://")
 Session = sessionmaker(bind=engine)
 
-base_oso = Oso()
-AuthorizedSession = authorized_sessionmaker(
-    bind=engine,
-    get_oso=lambda: base_oso,
-    get_user=lambda: g.current_user,
-    get_action=lambda: g.current_action,
-)
-
 
 def create_app():
     app = Flask(__name__)
@@ -54,17 +46,13 @@ def create_app():
                 g.current_user = (
                     basic_session.query(User).filter(User.email == email).first()
                 )
-                # Set action for this request
-                actions = {"GET": "READ", "POST": "CREATE"}
-                g.current_action = actions[request.method]
-
-                # Set auth session for this request
-                g.auth_session = AuthorizedSession()
-
             except Exception as e:
                 return Unauthorized("user not found")
 
     return app
+
+
+base_oso = Oso()
 
 
 def init_oso(app):
