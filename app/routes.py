@@ -8,7 +8,7 @@ bp = Blueprint("routes", __name__)
 def repos_index(org_id):
     org = g.session.query(Organization).filter(Organization.id == org_id).first()
 
-    repos = g.session.query(Repository).filter(Repository.organization.has(id=org_id))
+    repos = g.session.query(Repository).filter_by(organization=org)
     return {f"repos": [repo.repr() for repo in repos]}
 
 
