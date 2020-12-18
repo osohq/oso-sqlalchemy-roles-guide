@@ -9,8 +9,7 @@ from .fixtures import load_fixture_data
 from werkzeug.exceptions import Unauthorized
 
 from oso import Oso
-from sqlalchemy_oso import authorized_sessionmaker, register_models, set_get_session
-from sqlalchemy_oso.roles import enable_roles
+from sqlalchemy_oso import register_models, set_get_session
 
 
 engine = create_engine("sqlite://")
