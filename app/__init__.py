@@ -38,12 +38,11 @@ def create_app():
                 return Unauthorized("user not found")
             try:
                 # Set basic (non-auth) session for this request
-                basic_session = Session()
-                g.basic_session = basic_session
+                g.session = Session()
 
                 # Set user for this request
                 g.current_user = (
-                    basic_session.query(User).filter(User.email == email).first()
+                    g.session.query(User).filter(User.email == email).first()
                 )
             except Exception as e:
                 return Unauthorized("user not found")
@@ -56,6 +55,6 @@ base_oso = Oso()
 
 def init_oso(app):
     register_models(base_oso, Base)
-    set_get_session(base_oso, lambda: g.basic_session)
+    set_get_session(base_oso, lambda: g.session)
     base_oso.load_file("app/authorization.polar")
     app.oso = base_oso
