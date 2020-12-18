@@ -5,16 +5,10 @@ from enum import Enum
 from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 
-from sqlalchemy.types import Integer, String, DateTime
+from sqlalchemy.types import Integer, String
 from sqlalchemy.schema import Table, Column, ForeignKey
-from sqlalchemy.orm import relationship, scoped_session, backref
-
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-
-from sqlalchemy_oso import authorized_sessionmaker
-from sqlalchemy_utils.types.choice import ChoiceType
-
-from sqlalchemy_oso.roles import resource_role_class
 
 
 Base = declarative_base()
@@ -55,15 +49,3 @@ class Repository(Base):
 
     def repr(self):
         return {"id": self.id, "name": self.name}
-
-
-## ROLE MODELS ##
-
-OrganizationRoleMixin = resource_role_class(
-    Base, User, Organization, ["OWNER", "MEMBER", "BILLING"]
-)
-
-
-class OrganizationRole(Base, OrganizationRoleMixin):
-    def repr(self):
-        return {"id": self.id, "name": str(self.name)}

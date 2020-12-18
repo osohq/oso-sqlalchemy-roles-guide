@@ -1,4 +1,4 @@
-from .models import User, Organization, Repository, OrganizationRole
+from .models import User, Organization, Repository
 
 
 def load_fixture_data(session):
@@ -40,42 +40,5 @@ def load_fixture_data(session):
     ]
     for repo in repositories:
         session.add(repo)
-
-    # CREATE ROLE DATA
-    roles = [
-        OrganizationRole(
-            name="OWNER",
-            organization=beatles,
-            user=john,
-        ),
-        OrganizationRole(
-            name="MEMBER",
-            organization=beatles,
-            user=paul,
-        ),
-        OrganizationRole(
-            name="MEMBER",
-            organization=beatles,
-            user=ringo,
-        ),
-        OrganizationRole(
-            name="OWNER",
-            organization=monsters,
-            user=mike,
-        ),
-        OrganizationRole(
-            name="MEMBER",
-            organization=monsters,
-            user=sully,
-        ),
-        OrganizationRole(
-            name="MEMBER",
-            organization=monsters,
-            user=randall,
-        ),
-    ]
-
-    for role in roles:
-        session.add(role)
 
     session.commit()
