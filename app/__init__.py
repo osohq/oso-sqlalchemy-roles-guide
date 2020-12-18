@@ -11,6 +11,7 @@ from werkzeug.exceptions import Unauthorized
 from flask_oso import FlaskOso
 from oso import Oso
 from sqlalchemy_oso import register_models, set_get_session
+from sqlalchemy_oso.roles import enable_roles
 
 
 def create_app(db_path=None, load_fixtures=False):
@@ -62,3 +63,4 @@ def init_oso(app):
     set_get_session(base_oso, lambda: g.session)
     base_oso.load_file("app/authorization.polar")
     app.oso = oso
+    enable_roles(base_oso)

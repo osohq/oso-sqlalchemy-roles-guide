@@ -3,6 +3,8 @@ from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+from sqlalchemy_oso.roles import resource_role_class
+
 
 Base = declarative_base()
 
@@ -42,3 +44,15 @@ class Repository(Base):
 
     def repr(self):
         return {"id": self.id, "name": self.name}
+
+
+## ROLE MODELS ##
+
+OrganizationRoleMixin = resource_role_class(
+    Base, User, Organization, ["OWNER", "MEMBER", "BILLING"]
+)
+
+
+class OrganizationRole(Base, OrganizationRoleMixin):
+    def repr(self):
+        return {"id": self.id, "name": str(self.name)}
