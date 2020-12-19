@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app import create_app, models
+from app import create_app, models, engine, Session
 from app.fixtures import load_fixture_data
 
 
@@ -25,8 +25,6 @@ def test_db_session(db_path):
     engine = create_engine(db_path)
     Session = sessionmaker(bind=engine)
     models.Base.metadata.create_all(engine)
-
-    Session = sessionmaker(bind=engine)
     session = Session()
 
     load_fixture_data(session)

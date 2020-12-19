@@ -13,6 +13,10 @@ role_allow(role: OrganizationRole{name: "MEMBER"}, "LIST_REPOS", organization: O
 ### The billing role can view billing info
 role_allow(role: OrganizationRole{name: "BILLING"}, "READ_BILLING", organization: Organization);
 
+### Org owners can assign roles within the org
+role_allow(role: OrganizationRole{name: "OWNER"}, "CREATE_ROLE", organization: Organization);
+
+
 # ROLE-ROLE RELATIONSHIPS
 
 ## Role Hierarchies
