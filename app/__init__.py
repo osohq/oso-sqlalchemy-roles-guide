@@ -13,7 +13,7 @@ from oso import Oso
 from sqlalchemy_oso import register_models, set_get_session
 
 
-engine = create_engine("sqlite://")
+engine = create_engine("sqlite:///roles.db")
 Session = sessionmaker(bind=engine)
 
 
