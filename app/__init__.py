@@ -13,11 +13,14 @@ from oso import Oso
 from sqlalchemy_oso import register_models, set_get_session
 
 
-engine = create_engine("sqlite:///roles.db")
-Session = sessionmaker(bind=engine)
+def create_app(db_path=None):
+    if db_path:
+        engine = create_engine(db_path)
+    else:
+        engine = create_engine("sqlite:///roles.db")
 
+    Session = sessionmaker(bind=engine)
 
-def create_app():
     app = Flask(__name__)
 
     init_oso(app)
@@ -51,11 +54,10 @@ def create_app():
     return app
 
 
-base_oso = Oso()
-oso = FlaskOso(base_oso)
-
-
 def init_oso(app):
+    base_oso = Oso()
+    oso = FlaskOso(base_oso)
+
     register_models(base_oso, Base)
     set_get_session(base_oso, lambda: g.session)
     base_oso.load_file("app/authorization.polar")
