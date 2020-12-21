@@ -4,6 +4,11 @@ from .models import User, Organization, Repository
 bp = Blueprint("routes", __name__)
 
 
+@bp.route("/")
+def whoami():
+    return f"Hello {g.current_user.email}"
+
+
 @bp.route("/orgs/<int:org_id>/repos", methods=["GET"])
 def repos_index(org_id):
     org = g.session.query(Organization).filter(Organization.id == org_id).first()
