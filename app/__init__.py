@@ -13,26 +13,26 @@ from oso import Oso
 from sqlalchemy_oso import register_models, set_get_session
 
 
-def create_app(db_path=None):
+def create_app(db_path=None, load_fixtures=False):
+    from . import routes
+
+    # init engine and session
     if db_path:
         engine = create_engine(db_path)
     else:
         engine = create_engine("sqlite:///roles.db")
-
     Session = sessionmaker(bind=engine)
+    Base.metadata.create_all(engine)
+    session = Session()
 
+    # init app
     app = Flask(__name__)
-
+    app.register_blueprint(routes.bp)
     init_oso(app)
 
-    Base.metadata.create_all(engine)
-
-    session = Session()
-    load_fixture_data(session)
-
-    from . import routes
-
-    app.register_blueprint(routes.bp)
+    # optionally load fixture data
+    if load_fixtures:
+        load_fixture_data(session)
 
     @app.before_request
     def set_current_user_and_session():
