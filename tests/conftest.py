@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app import create_app, models, engine, Session
+from app import create_app, models
 from app.fixtures import load_fixture_data
 
 
