@@ -1,5 +1,4 @@
 from .conftest import test_client, test_db_session
-from flask import json
 import pytest
 
 from app.models import User
