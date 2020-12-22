@@ -37,7 +37,7 @@ def org_roles_new(org_id):
     user_email = request.get_json().get("user_email")
     user = g.session.query(User).filter_by(email=user_email).first()
     try:
-        add_user_role(g.session, user, org, role_name)
+        add_user_role(g.session, user, org, role_name, commit=True)
     except Exception as e:
         reassign_user_role(g.session, user, org, role_name)
 
