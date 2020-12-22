@@ -7,13 +7,13 @@
 ### All organization roles let users read the organization
 role_allow(_role: OrganizationRole, "READ", _org: Organization);
 
-### Org members can list repos in the org
+### The member role can list repos in the org
 role_allow(_role: OrganizationRole{name: "MEMBER"}, "LIST_REPOS", _org: Organization);
 
 ### The billing role can view billing info
 role_allow(_role: OrganizationRole{name: "BILLING"}, "READ_BILLING", _org: Organization);
 
-### Org owners can assign roles within the org
+### The owner role can assign roles within the org
 role_allow(_role: OrganizationRole{name: "OWNER"}, "CREATE_ROLE", _org: Organization);
 
 
