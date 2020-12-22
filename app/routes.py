@@ -36,9 +36,12 @@ def org_roles_new(org_id):
     role_name = request.get_json().get("name")
     user_email = request.get_json().get("user_email")
     user = g.session.query(User).filter_by(email=user_email).first()
+
+    # Try adding the user role
     try:
         add_user_role(g.session, user, org, role_name, commit=True)
+    # If the user already has a role, reassign their role
     except Exception as e:
-        reassign_user_role(g.session, user, org, role_name)
+        reassign_user_role(g.session, user, org, role_name, commit=True)
 
     return f"created a new role for org: {org_id}, {user_email}, {role_name}"
