@@ -49,7 +49,7 @@ class Repository(Base):
 ## ROLE MODELS ##
 
 OrganizationRoleMixin = resource_role_class(
-    Base, User, Organization, ["OWNER", "MEMBER", "BILLING"]
+    User, Organization, ["OWNER", "MEMBER", "BILLING"]
 )
 
 
