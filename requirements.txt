@@ -1,5 +1,5 @@
 oso
-sqlalchemy-oso
+sqlalchemy-oso~=0.7.0
 flask
 flask_oso
 pytest
